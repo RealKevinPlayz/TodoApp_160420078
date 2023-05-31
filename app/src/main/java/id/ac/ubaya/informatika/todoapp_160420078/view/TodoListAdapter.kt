@@ -7,14 +7,19 @@ import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import id.ac.ubaya.informatika.todoapp_160420078.R
 import id.ac.ubaya.informatika.todoapp_160420078.model.Todo
+import kotlinx.android.synthetic.main.todo_item_layout.view.*
 
-class TodoListAdapter(val todoList:ArrayList<Todo>)
+class TodoListAdapter(val todoList:ArrayList<Todo>, val adapterOnClick : (Todo) -> Unit)
 : RecyclerView.Adapter<TodoListAdapter.TodoViewHolder>() {
     class TodoViewHolder(var view: View): RecyclerView.ViewHolder(view)
 
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
-        var checktask = holder.view.findViewById<CheckBox>(R.id.checkTask)
-        checktask.text = todoList[position].title
+        holder.view.checkTask.setText(todoList[position].title.toString())
+
+        holder.view.checkTask.setOnCheckedChangeListener { compoundButton, b ->
+            adapterOnClick(todoList[position])
+        }
+
     }
 
 
