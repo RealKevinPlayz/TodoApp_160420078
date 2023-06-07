@@ -39,10 +39,14 @@ class EditTodoFragment : Fragment() {
         btnAdd.text = "Save"
 
         btnAdd.setOnClickListener {
-            val radio =
-                view.findViewById<RadioButton>(radioGroupPriority.checkedRadioButtonId)
+            val txtTitle = view.findViewById<EditText>(R.id.txtTitle)
+            val txtNotes = view.findViewById<EditText>(R.id.txtNotes)
+
+            var radio = view.findViewById<RadioGroup>(R.id.radioGroupPriority)
+            val selectedRadioButton = view.findViewById<RadioButton>(radio.checkedRadioButtonId)
+
             viewModel.update(txtTitle.text.toString(), txtNotes.text.toString(),
-                radio.tag.toString().toInt(), uuid)
+                selectedRadioButton.tag.toString().toInt(), uuid)
             Toast.makeText(view.context, "Todo updated", Toast.LENGTH_SHORT).show()
             Navigation.findNavController(it).popBackStack()
         }
