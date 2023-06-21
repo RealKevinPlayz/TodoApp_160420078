@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import id.ac.ubaya.informatika.todoapp_160420078.R
 import id.ac.ubaya.informatika.todoapp_160420078.model.Todo
+import id.ac.ubaya.informatika.todoapp_160420078.util.NotificationHelper
 import id.ac.ubaya.informatika.todoapp_160420078.viewmodel.DetailTodoViewModel
 import kotlinx.android.synthetic.main.fragment_create_todo.*
 import kotlinx.android.synthetic.main.fragment_create_todo.view.*
@@ -36,6 +37,8 @@ class CreateTodoFragment : Fragment() {
             ViewModelProvider(this).get(DetailTodoViewModel::class.java)
             val btnAdd = view.findViewById<Button>(R.id.btnAdd)
         btnAdd.setOnClickListener {
+            NotificationHelper(view.context).createNotification("Todo Created", "A new todo has been created! Stay Hocus Pokus!")
+
             var radio = view.findViewById<RadioGroup>(R.id.radioGroupPriority)
             val selectedRadioButton = view.findViewById<RadioButton>(radio.checkedRadioButtonId)
 
