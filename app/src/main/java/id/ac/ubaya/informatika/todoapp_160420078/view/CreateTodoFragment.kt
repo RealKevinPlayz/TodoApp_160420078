@@ -12,12 +12,16 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import id.ac.ubaya.informatika.todoapp_160420078.R
 import id.ac.ubaya.informatika.todoapp_160420078.model.Todo
 import id.ac.ubaya.informatika.todoapp_160420078.util.NotificationHelper
 import id.ac.ubaya.informatika.todoapp_160420078.viewmodel.DetailTodoViewModel
 import kotlinx.android.synthetic.main.fragment_create_todo.*
 import kotlinx.android.synthetic.main.fragment_create_todo.view.*
+import java.util.concurrent.TimeUnit
 
 class CreateTodoFragment : Fragment() {
 
@@ -37,7 +41,17 @@ class CreateTodoFragment : Fragment() {
             ViewModelProvider(this).get(DetailTodoViewModel::class.java)
             val btnAdd = view.findViewById<Button>(R.id.btnAdd)
         btnAdd.setOnClickListener {
-            NotificationHelper(view.context).createNotification("Todo Created", "A new todo has been created! Stay Hocus Pokus!")
+
+            val myWorkRequest = OneTimeWorkRequestBuilder<TodoWorker>()
+                .setInitialDelay(5, TimeUnit.SECONDS)
+                .setInputData(
+                    workDataOf(
+                        "title" to "Todo Created",
+                        "messages" to "A new todo has been created! Stay Hocus Pokus!"
+                    )
+                )
+                .build()
+            WorkManager.getInstance(requireContext()).enqueue(myWorkRequest)
 
             var radio = view.findViewById<RadioGroup>(R.id.radioGroupPriority)
             val selectedRadioButton = view.findViewById<RadioButton>(radio.checkedRadioButtonId)
